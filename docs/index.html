@@ -529,6 +529,145 @@
       font-weight: 600;
     }
 
+    /* Demo terminal */
+    .demo-section {
+      margin: 80px 0;
+    }
+
+    .demo-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .demo-header h2 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .demo-header h3 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .demo-terminal {
+      background: #0c0c14;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 0 60px rgba(0,255,136,0.06),
+        0 20px 60px rgba(0,0,0,0.5);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .terminal-chrome {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .terminal-dots { display: flex; gap: 8px; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    .terminal-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 1.5s ease infinite;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .terminal-body {
+      padding: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 320px;
+      overflow: hidden;
+    }
+
+    .terminal-line {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .prompt-symbol { color: var(--green); font-weight: 700; margin-right: 8px; }
+
+    .typed-text { color: var(--text); }
+
+    .cursor {
+      color: var(--green);
+      animation: blink 0.8s step-end infinite;
+      font-weight: 100;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .output-line { color: var(--text-dim); margin-left: 20px; }
+    .output-line.success { color: var(--green); }
+    .output-line.data { color: var(--blue); }
+    .output-line.highlight { color: #ffcc00; }
+    .output-line.dim { color: #444460; }
+
+    .terminal-stats {
+      display: flex;
+      border-top: 1px solid var(--border);
+      background: rgba(0,255,136,0.02);
+    }
+
+    .ts {
+      flex: 1;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-right: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .ts:last-child { border-right: none; }
+
+    .ts-label {
+      color: var(--text-dim);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .ts-value {
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .stats { grid-template-columns: repeat(2, 1fr); }
@@ -602,6 +741,41 @@
         <div class="stat-label">Networks</div>
       </div>
     </div>
+
+    <!-- Live Demo Terminal -->
+    <section class="demo-section" id="demo">
+      <div class="demo-header">
+        <h2>LIVE DEMO</h2>
+        <h3>Watch your AI agent work on Solana</h3>
+      </div>
+      <div class="demo-terminal">
+        <div class="terminal-chrome">
+          <div class="terminal-dots">
+            <div class="code-dot red"></div>
+            <div class="code-dot yellow"></div>
+            <div class="code-dot green"></div>
+          </div>
+          <div class="terminal-title">solana-mcp agent</div>
+          <div class="terminal-status">
+            <span class="status-dot"></span>
+            <span>CONNECTED</span>
+          </div>
+        </div>
+        <div class="terminal-body" id="terminal">
+          <div class="terminal-line" id="cursor-line">
+            <span class="prompt-symbol">&gt;</span>
+            <span class="typed-text" id="typed"></span>
+            <span class="cursor">|</span>
+          </div>
+        </div>
+        <div class="terminal-stats">
+          <div class="ts"><span class="ts-label">SOL</span> <span class="ts-value" id="sol-price">$0.00</span></div>
+          <div class="ts"><span class="ts-label">TPS</span> <span class="ts-value" id="tps-val">0</span></div>
+          <div class="ts"><span class="ts-label">EPOCH</span> <span class="ts-value" id="epoch-val">---</span></div>
+          <div class="ts"><span class="ts-label">SLOT</span> <span class="ts-value" id="slot-val">---</span></div>
+        </div>
+      </div>
+    </section>
 
     <!-- Quick Start -->
     <section class="code-section" id="quickstart">
@@ -761,6 +935,152 @@
         });
       });
     });
+
+    // Terminal animation
+    const terminal = document.getElementById('terminal');
+    const typed = document.getElementById('typed');
+    const cursorLine = document.getElementById('cursor-line');
+
+    const sequences = [
+      {
+        cmd: 'get_balance("7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU")',
+        output: [
+          { text: 'Querying Solana mainnet-beta...', cls: 'dim' },
+          { text: '  address: 7xKXtg...gAsU', cls: '' },
+          { text: '  balance: 14,892.47 SOL', cls: 'success' },
+          { text: '  network: mainnet-beta', cls: 'data' },
+        ]
+      },
+      {
+        cmd: 'get_swap_quote("SOL", "USDC", 100)',
+        output: [
+          { text: 'Fetching Jupiter quote...', cls: 'dim' },
+          { text: '  route: SOL -> USDC via Raydium', cls: '' },
+          { text: '  input:  100 SOL', cls: 'data' },
+          { text: '  output: 13,847.22 USDC', cls: 'success' },
+          { text: '  price_impact: 0.02%', cls: 'success' },
+          { text: '  slippage: 0.5%', cls: 'data' },
+        ]
+      },
+      {
+        cmd: 'get_largest_token_holders("JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN")',
+        output: [
+          { text: 'Fetching top holders for JUP token...', cls: 'dim' },
+          { text: '  #1  4.2M JUP  (Treasury)       12.8%', cls: 'highlight' },
+          { text: '  #2  1.8M JUP  (Staking Pool)    5.5%', cls: '' },
+          { text: '  #3  890K JUP  (Team Vesting)     2.7%', cls: '' },
+          { text: '  #4  412K JUP  (Whale)            1.3%', cls: 'data' },
+          { text: '  #5  298K JUP  (DEX LP)           0.9%', cls: 'data' },
+        ]
+      },
+      {
+        cmd: 'get_token_price("SOL")',
+        output: [
+          { text: 'Fetching price from Jupiter...', cls: 'dim' },
+          { text: '  token: SOL', cls: '' },
+          { text: '  price: $138.47 USD', cls: 'success' },
+          { text: '  24h change: +4.2%', cls: 'success' },
+        ]
+      },
+      {
+        cmd: 'get_nfts_by_owner("DRpbCBMxVnDK7maPMoJ6v1RYsLgnRVLiddSrJfhmEk7u")',
+        output: [
+          { text: 'Scanning wallet for NFTs...', cls: 'dim' },
+          { text: '  Found 23 NFTs', cls: 'success' },
+          { text: '  Mad Lads #4271       Floor: 98.5 SOL', cls: 'highlight' },
+          { text: '  Tensorian #892       Floor: 12.2 SOL', cls: '' },
+          { text: '  Claynosaurz #1447    Floor: 8.7 SOL', cls: '' },
+          { text: '  + 20 more...', cls: 'data' },
+        ]
+      }
+    ];
+
+    let seqIdx = 0;
+
+    async function sleep(ms) {
+      return new Promise(r => setTimeout(r, ms));
+    }
+
+    async function typeText(text) {
+      typed.textContent = '';
+      for (let i = 0; i < text.length; i++) {
+        typed.textContent += text[i];
+        await sleep(25 + Math.random() * 35);
+      }
+    }
+
+    function addOutputLine(text, cls) {
+      const div = document.createElement('div');
+      div.className = 'terminal-line output-line' + (cls ? ' ' + cls : '');
+      div.textContent = text;
+      terminal.insertBefore(div, cursorLine);
+    }
+
+    function addBlankLine() {
+      const div = document.createElement('div');
+      div.className = 'terminal-line';
+      div.innerHTML = '&nbsp;';
+      terminal.insertBefore(div, cursorLine);
+    }
+
+    async function runSequence() {
+      const seq = sequences[seqIdx % sequences.length];
+      seqIdx++;
+
+      // Type the command
+      await typeText(seq.cmd);
+      await sleep(400);
+
+      // Show output lines one by one
+      for (const line of seq.output) {
+        addOutputLine(line.text, line.cls);
+        await sleep(120 + Math.random() * 80);
+      }
+
+      addBlankLine();
+      typed.textContent = '';
+      await sleep(2000);
+
+      // Keep terminal from getting too long
+      const lines = terminal.querySelectorAll('.terminal-line');
+      if (lines.length > 30) {
+        for (let i = 0; i < 8; i++) {
+          if (lines[i] !== cursorLine) lines[i].remove();
+        }
+      }
+
+      runSequence();
+    }
+
+    // Animate stats
+    function animateStats() {
+      const solPrices = [138.47, 138.52, 138.39, 138.61, 138.44, 138.58, 138.33, 138.71];
+      const tpsVals = [3847, 3921, 3788, 4012, 3856, 3934, 3801, 3967];
+      let tick = 0;
+
+      setInterval(() => {
+        tick++;
+        const sp = solPrices[tick % solPrices.length];
+        const tp = tpsVals[tick % tpsVals.length];
+        document.getElementById('sol-price').textContent = '$' + sp.toFixed(2);
+        document.getElementById('tps-val').textContent = tp.toLocaleString();
+        document.getElementById('epoch-val').textContent = '743';
+        document.getElementById('slot-val').textContent = (321847000 + tick * 4).toLocaleString();
+      }, 2000);
+    }
+
+    // Start when visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          runSequence();
+          animateStats();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(document.querySelector('.demo-terminal'));
   </script>
 </body>
 </html>
