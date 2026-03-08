@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solana MCP — AI Agent Infrastructure for Solana</title>
+  <meta name="description" content="The most comprehensive Model Context Protocol server for Solana. 38 tools. 10 prompts. Give your AI agent full access to the Solana blockchain.">
+
+  <!-- Open Graph / Twitter Card -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Solana MCP — AI Agent Infrastructure for Solana">
+  <meta property="og:description" content="38 tools across 7 modules. Give Claude, Cursor, or any AI agent full access to Solana — wallets, tokens, DeFi, NFTs, and more.">
+  <meta property="og:image" content="https://visioneth.github.io/solana-mcp/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Solana MCP — AI Agent Infrastructure for Solana">
+  <meta name="twitter:description" content="38 tools across 7 modules. Give your AI agent full access to Solana.">
+  <meta name="twitter:image" content="https://visioneth.github.io/solana-mcp/og-image.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-card-hover: #1a1a28;
+      --border: #1e1e30;
+      --text: #e4e4ef;
+      --text-dim: #8888a0;
+      --green: #00ff88;
+      --green-dim: #00cc6a;
+      --blue: #4488ff;
+      --purple: #9944ff;
+      --gradient: linear-gradient(135deg, #00ff88, #4488ff);
+      --gradient-purple: linear-gradient(135deg, #4488ff, #9944ff);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Animated grid background */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(0,255,136,0.08) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Nav */
+    nav {
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--text-dim); font-weight: 400; }
+
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-github:hover {
+      border-color: var(--green);
+      background: var(--bg-card-hover);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 100px 0 60px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,255,136,0.08);
+      border: 1px solid rgba(0,255,136,0.2);
+      color: var(--green);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    h1 .gradient {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 20px;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gradient);
+      color: #000;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,255,136,0.3);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      border-color: var(--blue);
+      background: var(--bg-card-hover);
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 80px 0;
+    }
+
+    .stat {
+      background: var(--bg-card);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 900;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-label {
+      color: var(--text-dim);
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* Code block */
+    .code-section {
+      margin: 80px 0;
+      text-align: center;
+    }
+
+    .code-section h2 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .code-section h3 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 40px;
+      letter-spacing: -1px;
+    }
+
+    .code-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: left;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .code-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .code-dot.red { background: #ff5f57; }
+    .code-dot.yellow { background: #febc2e; }
+    .code-dot.green { background: #28c840; }
+
+    .code-header span {
+      color: var(--text-dim);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      margin-left: 8px;
+    }
+
+    .code-body {
+      padding: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .code-body .comment { color: #555570; }
+    .code-body .key { color: var(--blue); }
+    .code-body .string { color: var(--green); }
+    .code-body .bracket { color: var(--text-dim); }
+
+    /* Modules grid */
+    .modules {
+      margin: 100px 0;
+    }
+
+    .modules-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .modules-header h2 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .modules-header h3 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .module-card:hover {
+      border-color: rgba(0,255,136,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    .module-card:hover::before { opacity: 1; }
+
+    .module-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .module-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .module-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .module-desc {
+      color: var(--text-dim);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .module-tools {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tool-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: rgba(0,255,136,0.06);
+      border: 1px solid rgba(0,255,136,0.12);
+      color: var(--green-dim);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .cta-glow {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(68,136,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--text-dim);
+      font-size: 18px;
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .install-cmd {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 16px 28px;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      margin-bottom: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .install-cmd:hover {
+      border-color: var(--green);
+    }
+
+    .install-cmd .dollar { color: var(--green); }
+    .install-cmd .cmd { color: var(--text); }
+    .install-cmd .copy {
+      color: var(--text-dim);
+      font-size: 13px;
+      border-left: 1px solid var(--border);
+      padding-left: 12px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    footer a { color: var(--green); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Built by */
+    .built-by {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .built-by a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .modules-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 0 40px; }
+    }
+
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr; }
+      .stat-number { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="container">
+    <nav>
+      <a href="/" class="logo">solana-mcp <span>v0.1.0</span></a>
+      <div class="nav-links">
+        <a href="#modules">Modules</a>
+        <a href="#quickstart">Quick Start</a>
+        <a href="https://github.com/visioneth/solana-mcp" class="btn-github">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="badge">OPEN SOURCE</div>
+      <h1>
+        Give your AI agent<br>
+        <span class="gradient">full access to Solana</span>
+      </h1>
+      <p class="hero-sub">
+        The most comprehensive Model Context Protocol server for Solana.
+        38 tools across 7 modules. Works with Claude, Cursor, and any MCP client.
+      </p>
+      <div class="hero-actions">
+        <a href="https://github.com/visioneth/solana-mcp" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View on GitHub
+        </a>
+        <a href="#quickstart" class="btn-secondary">Quick Start</a>
+      </div>
+      <div class="built-by">
+        Built by <a href="https://github.com/visioneth">visioneth</a>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">38</div>
+        <div class="stat-label">Tools</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10</div>
+        <div class="stat-label">Prompts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">7</div>
+        <div class="stat-label">Modules</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Networks</div>
+      </div>
+    </div>
+
+    <!-- Quick Start -->
+    <section class="code-section" id="quickstart">
+      <h2>Quick Start</h2>
+      <h3>One line to connect your AI to Solana</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dot red"></div>
+          <div class="code-dot yellow"></div>
+          <div class="code-dot green"></div>
+          <span>claude_desktop_config.json</span>
+        </div>
+        <div class="code-body">
+          <span class="bracket">{</span><br>
+          &nbsp;&nbsp;<span class="key">"mcpServers"</span>: <span class="bracket">{</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"solana-mcp"</span>: <span class="bracket">{</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"command"</span>: <span class="string">"npx"</span>,<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@visioneth/solana-mcp@latest"</span>]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="bracket">}</span><br>
+          &nbsp;&nbsp;<span class="bracket">}</span><br>
+          <span class="bracket">}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modules -->
+    <section class="modules" id="modules">
+      <div class="modules-header">
+        <h2>Modules</h2>
+        <h3>Everything your agent needs on Solana</h3>
+      </div>
+      <div class="modules-grid">
+        <div class="module-card">
+          <span class="module-icon">&#128179;</span>
+          <div class="module-name">Wallet</div>
+          <div class="module-count">7 tools</div>
+          <div class="module-desc">Balance checks, SOL transfers, airdrops, transaction history, and account inspection.</div>
+          <div class="module-tools">
+            <span class="tool-tag">get_balance</span>
+            <span class="tool-tag">transfer_sol</span>
+            <span class="tool-tag">get_transaction</span>
+            <span class="tool-tag">request_airdrop</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <span class="module-icon">&#129689;</span>
+          <div class="module-name">SPL Tokens</div>
+          <div class="module-count">7 tools</div>
+          <div class="module-desc">Create, mint, transfer, and burn SPL tokens. Full token lifecycle management.</div>
+          <div class="module-tools">
+            <span class="tool-tag">create_token</span>
+            <span class="tool-tag">mint_tokens</span>
+            <span class="tool-tag">transfer_token</span>
+            <span class="tool-tag">burn_tokens</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <span class="module-icon">&#128200;</span>
+          <div class="module-name">DeFi</div>
+          <div class="module-count">4 tools</div>
+          <div class="module-desc">Jupiter swap quotes and execution, token prices, and staking account management.</div>
+          <div class="module-tools">
+            <span class="tool-tag">get_swap_quote</span>
+            <span class="tool-tag">execute_swap</span>
+            <span class="tool-tag">get_token_price</span>
+            <span class="tool-tag">get_stake_accounts</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <span class="module-icon">&#127912;</span>
+          <div class="module-name">NFT</div>
+          <div class="module-count">3 tools</div>
+          <div class="module-desc">On-chain NFT metadata, collection info, and wallet NFT inventory.</div>
+          <div class="module-tools">
+            <span class="tool-tag">get_nft_metadata</span>
+            <span class="tool-tag">get_nfts_by_owner</span>
+            <span class="tool-tag">get_nft_collection_info</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <span class="module-icon">&#128187;</span>
+          <div class="module-name">Programs</div>
+          <div class="module-count">4 tools</div>
+          <div class="module-desc">Inspect on-chain programs, read account data, and identify known Solana programs.</div>
+          <div class="module-tools">
+            <span class="tool-tag">is_program</span>
+            <span class="tool-tag">get_program_accounts</span>
+            <span class="tool-tag">read_account_data</span>
+            <span class="tool-tag">identify_program</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <span class="module-icon">&#128202;</span>
+          <div class="module-name">Analytics</div>
+          <div class="module-count">5 tools</div>
+          <div class="module-desc">Token holder distribution, supply analysis, SOL price, TPS, and whale tracking.</div>
+          <div class="module-tools">
+            <span class="tool-tag">get_largest_token_holders</span>
+            <span class="tool-tag">get_sol_price</span>
+            <span class="tool-tag">get_tps</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <span class="module-icon">&#127760;</span>
+          <div class="module-name">Network</div>
+          <div class="module-count">8 tools</div>
+          <div class="module-desc">Epoch info, block queries, cluster nodes, SOL supply, rent calculations, and health checks.</div>
+          <div class="module-tools">
+            <span class="tool-tag">get_epoch_info</span>
+            <span class="tool-tag">get_block</span>
+            <span class="tool-tag">get_supply</span>
+            <span class="tool-tag">get_health</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="cta-glow"></div>
+      <h2>Start building in 30 seconds</h2>
+      <p>Install the server and connect your AI agent to Solana. No API keys needed for read-only operations.</p>
+      <div class="install-cmd" onclick="navigator.clipboard.writeText('npx @visioneth/solana-mcp@latest')">
+        <span class="dollar">$</span>
+        <span class="cmd">npx @visioneth/solana-mcp@latest</span>
+        <span class="copy">click to copy</span>
+      </div>
+      <br><br>
+      <a href="https://github.com/visioneth/solana-mcp" class="btn-primary">
+        View on GitHub
+      </a>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>
+        MIT Licensed &middot; Built by <a href="https://github.com/visioneth">visioneth</a> &middot;
+        <a href="https://github.com/visioneth/solana-mcp">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
